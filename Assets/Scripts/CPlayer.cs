@@ -395,17 +395,23 @@ public class CPlayer : MonoBehaviour {
 			}
 
 			// check Straight again in flush list
-			int startIndex_flush = 0 ;
-			if ( StraightCheck ( flushList , out startIndex_flush ) ) {
+			int startIndex_flush = 0;
+			if (StraightCheck (flushList, out startIndex_flush)) {
 
 				for (int i = startIndex_flush; i < startIndex_flush + MaxHandCardCount; ++i)
 					pickedCardList.Add (flushList [i]);
 
-				if ( pickedCardList [ startIndex_flush ].Value == ACE_value )
+				if (pickedCardList [startIndex_flush].Value == ACE_value)
 					result.type = E_CardCombinationType.RoyalStraigthFlush;
 				else
 					// straigth flush check
 					result.type = E_CardCombinationType.StraigthFlush;
+			} else {
+				
+				// flush , add five card in pick list
+				for (int i = 0; i < MaxHandCardCount; ++i)
+					pickedCardList.Add (flushList [i]);
+
 			}
 
 			break;
