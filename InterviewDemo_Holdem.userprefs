@@ -1,0 +1,18 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\CPlayer.cs">
+    <Files>
+      <File FileName="Assets\Scripts\CPlayer.cs" Line="403" Column="21" />
+      <File FileName="Assets\Scripts\CCardData.cs" Line="1" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="C:\Users\User\InterviewDemo_Holdem\Assets\Scripts\CPlayer.cs" line="321" column="1" />
+      <Breakpoint file="C:\Users\User\InterviewDemo_Holdem\Assets\Scripts\CPlayer.cs" line="324" column="1" />
+      <Breakpoint file="C:\Users\User\InterviewDemo_Holdem\Assets\Scripts\CPlayer.cs" line="312" column="1" />
+      <Breakpoint file="C:\Users\User\InterviewDemo_Holdem\Assets\Scripts\CPlayer.cs" line="279" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
