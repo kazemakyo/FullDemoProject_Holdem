@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class GameMain : MonoBehaviour {	
 
+	static public GameMain instance ;
+
 	public Transform CardDataRoot ;
 	public List<CCardData> CardData ;
 
@@ -18,10 +20,12 @@ public class GameMain : MonoBehaviour {
 	public CPlayer Player02 ;
 
 	void Awake () {
-		
+
+		instance = this;
+
 		CardData = new List<CCardData> ();
 		CardPool = new Queue<CCardData> ();
-		CommunityCardPool = new List<CCardData> ();
+//		CommunityCardPool = new List<CCardData> ();
 
 		GetCardData ();
 	}
@@ -48,7 +52,7 @@ public class GameMain : MonoBehaviour {
 	// Randomize Card Pool
 	void Shuffle () {
 		
-		CommunityCardPool.Clear ();
+//		CommunityCardPool.Clear ();
 		List<CCardData> tempCardList = new List<CCardData> ();
 
 		foreach ( CCardData card in CardData ) {
@@ -73,35 +77,21 @@ public class GameMain : MonoBehaviour {
 	}
 
 	// draw a card from card pool
-	CCardData DrawCard () {
+	public CCardData DrawCard () {
 		return CardPool.Dequeue () ;
 	}
 
 	const int MaxCommunityCards = 5;
-	void DrawCards () {
-		
-		// draw cards flow , no implement now
+	void DrawCards () {		
+		// draw cards flow 
 		DrawCommunityCardSet ();
 		Player01.DrawCards ();
 		Player02.DrawCards ();
-
-		// easy draw cards flow 
-		foreach (GameObject card in CardSlotList) {
-			card.GetComponent<CCardData>().SetData ( DrawCard () );
-		}
-
-		int index = 0;
-		foreach (GameObject card in CardSlotList) {
-			if (index >= MaxCommunityCards )
-				break;
-			CommunityCardPool.Add ( card.GetComponent<CCardData>() );
-			index++;
-		}
-
 	}
 
 	void DrawCommunityCardSet () {
-
+		for ( int i = 0 ; i < MaxCommunityCards ; ++ i )
+			CommunityCardPool [ i ].SetData ( DrawCard () );
 	}
 
 	public Text TextComparerStatus ;
@@ -124,11 +114,72 @@ public class GameMain : MonoBehaviour {
 
 	}
 
+	List<CCardData> CardPoolList = new List<CCardData> ();
+
+	public List<CCardData> DebugCardSetRSF ;
+	public List<CCardData> DebugCardSetSF ;
+
+	// Debug Function
+	void SetCommunityCardSetAsTemplate ( List<CCardData> cardSetTemplate ) {		
+
+		Shuffle ();
+		CardPoolList.Clear ();
+
+		while (CardPool.Count > 0)
+			CardPoolList.Add (CardPool.Dequeue ());
+
+		int cardIndex = 0;
+		foreach (CCardData card in CommunityCardPool) {
+			card.SetData (cardSetTemplate [cardIndex]);
+			cardIndex++;
+		}
+
+		// search card and remove from pool
+		foreach ( CCardData card1 in cardSetTemplate ) {
+			foreach ( CCardData card2 in CardPoolList ) {
+				if (card1.GetWeight () == card2.GetWeight ()) {
+					CardPoolList.Remove (card2);
+					break;
+				}
+			}
+		}
+
+		CardPool.Clear ();
+
+		foreach (CCardData card in CardPoolList) {
+			CardPool.Enqueue (card);
+		}
+
+		Player01.DrawCards ();
+		Player02.DrawCards ();
+
+		ShowDown ();
+
+	}
+
+	// RSF = Royal Straigth Flush
+	public void SetCommunityCardSetAsRSF () {
+		SetCommunityCardSetAsTemplate ( DebugCardSetRSF );
+	}
+
+	// SF = Straigth Flush
+	public void SetCommunityCardSetAsSF () {
+		SetCommunityCardSetAsTemplate ( DebugCardSetSF );
+	}
+
 	// Update is called once per frame
 	void Update () {
 		
 		if (Input.GetKeyDown (KeyCode.Space)) {
 			RestartRound ();
+		}
+
+		if (Input.GetKeyDown (KeyCode.R)) {
+			SetCommunityCardSetAsRSF ();
+		}
+
+		if (Input.GetKeyDown (KeyCode.S)) {
+			SetCommunityCardSetAsSF ();
 		}
 
 		if (Input.GetKeyDown (KeyCode.Q)) {

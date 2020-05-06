@@ -14,6 +14,7 @@ public enum CardType {
 
 public class CCardData : MonoBehaviour {
 
+	const int MaxFlowerTypeCount = 4; 
 	public CardType Type; // flower type
 	public int Value;
 	public Sprite DisplayCardSprite ;
@@ -24,7 +25,7 @@ public class CCardData : MonoBehaviour {
 	}
 
 	public int GetWeight () {
-		return Value * 4 + (int)Type ;
+		return Value * MaxFlowerTypeCount + (int)Type ;
 	}
 
 	public void SetData ( CardType _type , int _value , Sprite _sp ) {
@@ -34,10 +35,13 @@ public class CCardData : MonoBehaviour {
 	}
 
 	public void SetData ( CCardData data ) {
+		
 		Type = data.Type;
 		Value = data.Value;
 		DisplayCardSprite = data.DisplayCardSprite;
-		GetComponent<Image> ().sprite = DisplayCardSprite;
+
+		if ( GetComponent<Image> () != null )
+			GetComponent<Image> ().sprite = DisplayCardSprite;
 	}
 
 	// Update is called once per frame
